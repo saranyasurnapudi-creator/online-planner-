@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookNest – Your World of Stories</title>
+    
+    <!-- Google Fonts: Playfair Display & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Crisp Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            DEFAULT: '#FAF7F2',
+                            light: '#FFFDF9',
+                            dark: '#F0EAE1',
+                            border: '#E5DDD0'
+                        },
+                        navy: {
+                            DEFAULT: '#1A2536',
+                            light: '#2C3E50',
+                            muted: '#5A6778'
+                        },
+                        amber: {
+                            accent: '#E07A38',
+                            hover: '#C86425',
+                            gold: '#D99B26',
+                            soft: '#FDF1E6'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Poppins"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -5px rgba(26, 37, 54, 0.06)',
+                        'card': '0 4px 20px -2px rgba(26, 37, 54, 0.08)',
+                        'book': '8px 12px 24px rgba(26, 37, 54, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cream text-navy font-sans antialiased selection:bg-amber-accent selection:text-white overflow-x-hidden">
+
+    <!-- ==================== 1. NAVIGATION BAR ==================== -->
+    <header class="sticky top-0 z-40 bg-cream/95 backdrop-blur-md border-b border-cream-border transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Brand Logo -->
+                <a href="#home" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-navy text-amber-gold flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-book-open text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl font-bold tracking-tight text-navy block leading-none">Book<span class="text-amber-accent">Nest</span></span>
+                        <span class="text-[10px] uppercase tracking-widest text-navy-muted font-medium">Your World of Stories</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#home" class="text-sm font-medium text-navy hover:text-amber-accent transition-colors">Home</a>
+                    <a href="#categories" class="text-sm font-medium text-navy hover:text-amber-accent transition-colors">Categories</a>
+                    <a href="#featured" class="text-sm font-medium text-navy hover:text-amber-accent transition-colors">Featured</a>
+                    <a href="#bestsellers" class="text-sm font-medium text-navy hover:text-amber-accent transition-colors">Best Sellers</a>
+                    <a href="#authors" class="text-sm font-medium text-navy hover:text-amber-accent transition-colors">Authors</a>
+                    <a href="#offers" class="text-sm font-medium text-navy hover:text-amber-accent transition-colors">Offers</a>
+                    <a href="#contact" class="text-sm font-medium text-navy hover:text-amber-accent transition-colors">Contact</a>
+                </nav>
+
+                <!-- Action Icons (Search, Wishlist, Cart, Mobile Menu) -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <!-- Quick Search Button -->
+                    <button onclick="focusHeroSearch()" aria-label="Search books" class="p-2.5 rounded-full text-navy hover:bg-cream-dark hover:text-amber-accent transition-colors">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    </button>
+
+                    <!-- Wishlist Button -->
+                    <button onclick="toggleWishlistModal()" aria-label="Wishlist" class="relative p-2.5 rounded-full text-navy hover:bg-cream-dark hover:text-amber-accent transition-colors">
+                        <i class="fa-regular fa-heart text-lg"></i>
+                        <span id="wishlist-badge" class="hidden absolute top-1 right-1 w-4 h-4 rounded-full bg-amber-gold text-white text-[10px] font-bold flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Shopping Cart Button -->
+                    <button onclick="toggleCartDrawer()" aria-label="Shopping Cart" class="relative p-2.5 rounded-full bg-navy text-white hover:bg-amber-accent transition-colors shadow-sm">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-accent border-2 border-cream text-white text-[11px] font-bold flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button onclick="toggleMobileMenu()" aria-label="Menu" class="lg:hidden p-2.5 rounded-xl text-navy hover:bg-cream-dark transition-colors">
+                        <i class="fa-solid fa-bars text-xl" id="mobile-menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-cream-light border-b border-cream-border px-4 pt-2 pb-6 space-y-2 shadow-lg">
+            <a href="#home" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-base font-medium text-navy hover:bg-amber-soft hover:text-amber-accent">Home</a>
+            <a href="#categories" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-base font-medium text-navy hover:bg-amber-soft hover:text-amber-accent">Categories</a>
+            <a href="#featured" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-base font-medium text-navy hover:bg-amber-soft hover:text-amber-accent">Featured Books</a>
+            <a href="#bestsellers" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-base font-medium text-navy hover:bg-amber-soft hover:text-amber-accent">Best Sellers</a>
+            <a href="#authors" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-base font-medium text-navy hover:bg-amber-soft hover:text-amber-accent">Authors</a>
+            <a href="#offers" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-base font-medium text-navy hover:bg-amber-soft hover:text-amber-accent">Offers</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-base font-medium text-navy hover:bg-amber-soft hover:text-amber-accent">Contact</a>
+        </div>
+    </header>
+
+    <!-- ==================== 2. HERO SECTION ==================== -->
+    <section id="home" class="relative pt-10 pb-16 lg:py-24 overflow-hidden bg-gradient-to-br from-cream via-cream-light to-amber-soft/50">
+        <!-- Subtle Decorative Background Elements -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-amber-gold/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-amber-accent/10 blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: Copy & Search -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-soft border border-amber-accent/20 text-amber-accent text-xs font-semibold tracking-wide uppercase">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Over 50,000+ Curated Titles</span>
+                    </div>
+                    
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-navy leading-tight">
+                        Discover Your Next <span class="text-amber-accent italic">Favorite Book</span>
+                    </h1>
+                    
+                    <p class="text-base sm:text-lg text-navy-muted max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Explore thousands of books and let your imagination grow. From timeless classics to modern bestsellers, your cozy reading corner starts at BookNest.
+                    </p>
+
+                    <!-- Interactive Search Bar -->
+                    <div class="max-w-xl mx-auto lg:mx-0 pt-2">
+                        <form onsubmit="handleSearchSubmit(event)" class="relative flex items-center bg-white rounded-2xl shadow-soft border border-cream-border p-1.5 focus-within:border-amber-accent focus-within:ring-2 focus-within:ring-amber-accent/20 transition-all">
+                            <i class="fa-solid fa-magnifying-glass text-navy-muted pl-4 pr-3"></i>
+                            <input 
+                                type="text" 
+                                id="hero-search-input"
+                                oninput="filterBooksByQuery(this.value)"
+                                placeholder="Search by book title, author, or genre..." 
+                                class="w-full py-2.5 px-2 text-sm sm:text-base text-navy placeholder-navy-muted/60 bg-transparent focus:outline-none"
+                            >
+                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-accent hover:bg-amber-hover text-white font-medium text-sm transition-colors shadow-sm shrink-0">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- CTA Buttons & Trust Metrics -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#featured" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-navy hover:bg-navy-light text-white font-medium text-sm sm:text-base transition-all shadow-md hover:shadow-lg flex items-center justify-center space-x-2">
+                            <span>Explore Books</span>
+                            <i class="fa-solid fa-arrow-right text-amber-gold"></i>
+                        </a>
+                        <a href="#offers" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white hover:bg-cream-dark text-navy border border-cream-border font-medium text-sm sm:text-base transition-colors flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-tag text-amber-accent"></i>
+                            <span>View Special Offers</span>
+                        </a>
+                    </div>
+
+                    <!-- Mini Stats -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-cream-border/80 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-navy">50K+</p>
+                            <p class="text-xs text-navy-muted">Books Available</p>
+                        </div>
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-navy">12K+</p>
+                            <p class="text-xs text-navy-muted">Happy Readers</p>
+                        </div>
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-navy">4.9 <i class="fa-solid fa-star text-amber-gold text-sm"></i></p>
+                            <p class="text-xs text-navy-muted">Store Rating</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Curated 3D Book Cover Showcase -->
+                <div class="lg:col-span-5 relative flex justify-center items-center py-6">
+                    <div class="relative w-full max-w-md h-80 sm:h-96 flex items-center justify-center">
+                        <!-- Backdrop Circle -->
+                        <div class="w-72 h-72 sm:w-80 sm:h-80 rounded-full bg-gradient-to-tr from-amber-accent/20 to-amber-gold/20 border border-amber-gold/30 flex items-center justify-center"></div>
+                        
+                        <!-- Left Tilted Book -->
+                        <div class="absolute left-2 sm:left-4 top-10 w-36 sm:w-44 aspect-[2/3] rounded-r-xl rounded-l-sm shadow-book transform -rotate-12 hover:-rotate-6 hover:-translate-y-2 transition-all duration-300 overflow-hidden border-l-4 border-navy bg-navy">
+                            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=500&q=80" alt="The Alchemist Cover" onerror="this.src='https://placehold.co/300x450/1A2536/E07A38?text=The+Alchemist'" class="w-full h-full object-cover">
+                        </div>
+
+                        <!-- Right Tilted Book -->
+                        <div class="absolute right-2 sm:right-4 top-12 w-36 sm:w-44 aspect-[2/3] rounded-r-xl rounded-l-sm shadow-book transform rotate-12 hover:rotate-6 hover:-translate-y-2 transition-all duration-300 overflow-hidden border-l-4 border-amber-gold bg-navy">
+                            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=80" alt="Classic Literature Cover" onerror="this.src='https://placehold.co/300x450/2C3E50/D99B26?text=Classic+Tales'" class="w-full h-full object-cover">
+                        </div>
+
+                        <!-- Center Hero Book -->
+                        <div class="relative z-20 w-44 sm:w-52 aspect-[2/3] rounded-r-xl rounded-l-sm shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden border-l-4 border-amber-accent bg-navy">
+                            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=500&q=80" alt="Atomic Habits Feature" onerror="this.src='https://placehold.co/320x480/1A2536/FAF7F2?text=Bestseller'" class="w-full h-full object-cover">
+                            <div class="absolute bottom-3 left-3 right-3 bg-navy/90 backdrop-blur-sm text-white p-2.5 rounded-lg border border-white/10">
+                                <span class="text-[10px] uppercase tracking-wider text-amber-gold font-semibold block">Staff Pick</span>
+                                <p class="text-xs font-medium truncate">Bestselling Collection 2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 3. BOOK CATEGORIES ==================== -->
+    <section id="categories" class="py-16 lg:py-20 bg-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="text-amber-accent font-semibold text-xs uppercase tracking-widest">Browse by Genre</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-navy mt-1">Explore Book Categories</h2>
+                </div>
+                <button onclick="filterByCategory('All')" id="reset-category-btn" class="text-sm font-medium text-amber-accent hover:text-amber-hover flex items-center space-x-1 self-start md:self-auto">
+                    <span>Show All Genres</span>
+                    <i class="fa-solid fa-rotate-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- 8 Category Cards Grid -->
+            <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+                <!-- Populated cleanly via JS for active state toggling -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 4. FEATURED BOOKS ==================== -->
+    <section id="featured" class="py-16 lg:py-20 bg-cream-light border-y border-cream-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="text-amber-accent font-semibold text-xs uppercase tracking-widest">Handpicked For You</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-navy mt-1">Featured Books</h2>
+                </div>
+                
+                <!-- Active Filter Pill & Sort -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <span id="active-filter-label" class="px-3.5 py-1.5 rounded-full bg-amber-soft text-amber-accent text-xs font-semibold">
+                        Showing: All Books
+                    </span>
+                    <select id="sort-books" onchange="sortBooks(this.value)" class="px-3.5 py-2 rounded-xl bg-white border border-cream-border text-xs sm:text-sm text-navy font-medium focus:outline-none focus:border-amber-accent">
+                        <option value="featured">Sort by: Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Featured Books Grid -->
+            <div id="featured-books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically rendered book cards -->
+            </div>
+
+            <!-- Empty Search State -->
+            <div id="no-books-found" class="hidden text-center py-16 bg-cream rounded-2xl border border-cream-border mt-6">
+                <i class="fa-solid fa-book-open-reader text-4xl text-navy-muted mb-3"></i>
+                <h3 class="font-serif text-xl font-bold text-navy">No matching books found</h3>
+                <p class="text-sm text-navy-muted mt-1 mb-4">Try adjusting your search keywords or reset the category filter.</p>
+                <button onclick="resetAllFilters()" class="px-5 py-2.5 rounded-xl bg-amber-accent text-white text-sm font-medium hover:bg-amber-hover transition-colors">
+                    Reset Filters
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 7. SPECIAL OFFERS & DISCOUNTS BANNER ==================== -->
+    <section id="offers" class="py-12 lg:py-16 bg-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative rounded-3xl bg-navy overflow-hidden shadow-xl p-8 sm:p-12 lg:p-16">
+                <!-- Decorative Glows -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-amber-accent/20 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-72 h-72 bg-amber-gold/15 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
+
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-4 text-center lg:text-left">
+                        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-gold/20 border border-amber-gold/40 text-amber-gold text-xs font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-fire"></i>
+                            <span>Limited Time Reader Festival</span>
+                        </div>
+                        
+                        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                            Up to <span class="text-amber-gold">50% OFF</span> on Selected Books!
+                        </h2>
+                        
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
+                            <span class="px-4 py-1.5 rounded-xl bg-amber-accent text-white font-semibold text-sm shadow-sm">
+                                <i class="fa-solid fa-gift mr-1.5"></i> Buy 2 Get 1 Free
+                            </span>
+                            <span class="text-cream/80 text-sm">
+                                + Free Express Shipping on orders over $35
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center gap-4">
+                        <a href="#bestsellers" class="w-full sm:w-auto lg:w-full px-8 py-4 rounded-2xl bg-amber-accent hover:bg-amber-hover text-white font-semibold text-base text-center shadow-lg hover:shadow-amber-accent/30 transition-all transform hover:-translate-y-0.5">
+                            Shop Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                        <button onclick="copyPromoCode()" class="w-full sm:w-auto lg:w-full px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-cream text-xs font-medium transition-colors flex items-center justify-center space-x-2">
+                            <span>Code: <strong class="text-amber-gold tracking-wider">NEST50</strong></span>
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 5. BEST-SELLING BOOKS ==================== -->
+    <section id="bestsellers" class="py-16 lg:py-20 bg-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-amber-accent font-semibold text-xs uppercase tracking-widest">Reader Favorites</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-navy mt-1">Best-Selling Books</h2>
+                <p class="text-sm sm:text-base text-navy-muted mt-2">
+                    Trending titles loved by our community of passionate readers this month.
+                </p>
+            </div>
+
+            <!-- Best Sellers Grid -->
+            <div id="bestsellers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dynamically rendered best-selling books -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 6. FEATURED AUTHORS ==================== -->
+    <section id="authors" class="py-16 lg:py-20 bg-cream-light border-t border-cream-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-amber-accent font-semibold text-xs uppercase tracking-widest">Voices Behind the Stories</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-navy mt-1">Featured Authors</h2>
+                <p class="text-sm sm:text-base text-navy-muted mt-2">
+                    Meet the visionary thinkers and storytellers whose words inspire millions around the globe.
+                </p>
+            </div>
+
+            <!-- Authors Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Author 1 -->
+                <div class="bg-cream rounded-2xl p-6 text-center border border-cream-border shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-amber-accent to-amber-gold">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="James Clear" onerror="this.src='https://placehold.co/200x200/1A2536/FAF7F2?text=JC'" class="w-full h-full object-cover rounded-full border-2 border-white">
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-navy">James Clear</h3>
+                    <p class="text-xs font-semibold text-amber-accent uppercase tracking-wider mt-0.5 mb-3">Habit & Behavior Expert</p>
+                    <p class="text-xs sm:text-sm text-navy-muted leading-relaxed mb-4">
+                        Author of the #1 New York Times bestseller <em>Atomic Habits</em>, focusing on continuous improvement and decision-making.
+                    </p>
+                    <button onclick="filterBooksByAuthor('James Clear')" class="text-xs font-semibold text-navy hover:text-amber-accent transition-colors inline-flex items-center space-x-1">
+                        <span>View Books</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- Author 2 -->
+                <div class="bg-cream rounded-2xl p-6 text-center border border-cream-border shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-amber-accent to-amber-gold">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" alt="Paulo Coelho" onerror="this.src='https://placehold.co/200x200/1A2536/FAF7F2?text=PC'" class="w-full h-full object-cover rounded-full border-2 border-white">
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-navy">Paulo Coelho</h3>
+                    <p class="text-xs font-semibold text-amber-accent uppercase tracking-wider mt-0.5 mb-3">Lyrical Novelist</p>
+                    <p class="text-xs sm:text-sm text-navy-muted leading-relaxed mb-4">
+                        Renowned Brazilian lyricist and novelist best known for his international spiritual classic <em>The Alchemist</em>.
+                    </p>
+                    <button onclick="filterBooksByAuthor('Paulo Coelho')" class="text-xs font-semibold text-navy hover:text-amber-accent transition-colors inline-flex items-center space-x-1">
+                        <span>View Books</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- Author 3 -->
+                <div class="bg-cream rounded-2xl p-6 text-center border border-cream-border shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-amber-accent to-amber-gold">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" alt="J.K. Rowling" onerror="this.src='https://placehold.co/200x200/1A2536/FAF7F2?text=JKR'" class="w-full h-full object-cover rounded-full border-2 border-white">
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-navy">J.K. Rowling</h3>
+                    <p class="text-xs font-semibold text-amber-accent uppercase tracking-wider mt-0.5 mb-3">Fantasy Creator</p>
+                    <p class="text-xs sm:text-sm text-navy-muted leading-relaxed mb-4">
+                        British author and philanthropist who created the beloved magical wizarding world of <em>Harry Potter</em>.
+                    </p>
+                    <button onclick="filterBooksByAuthor('J.K. Rowling')" class="text-xs font-semibold text-navy hover:text-amber-accent transition-colors inline-flex items-center space-x-1">
+                        <span>View Books</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- Author 4 -->
+                <div class="bg-cream rounded-2xl p-6 text-center border border-cream-border shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full p-1 bg-gradient-to-tr from-amber-accent to-amber-gold">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" alt="Morgan Housel" onerror="this.src='https://placehold.co/200x200/1A2536/FAF7F2?text=MH'" class="w-full h-full object-cover rounded-full border-2 border-white">
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-navy">Morgan Housel</h3>
+                    <p class="text-xs font-semibold text-amber-accent uppercase tracking-wider mt-0.5 mb-3">Behavioral Finance</p>
+                    <p class="text-xs sm:text-sm text-navy-muted leading-relaxed mb-4">
+                        Award-winning author of <em>The Psychology of Money</em>, exploring how human emotion shapes financial success.
+                    </p>
+                    <button onclick="filterBooksByAuthor('Morgan Housel')" class="text-xs font-semibold text-navy hover:text-amber-accent transition-colors inline-flex items-center space-x-1">
+                        <span>View Books</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 9. NEWSLETTER SECTION ==================== -->
+    <section class="py-16 bg-amber-soft border-t border-cream-border">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-accent/15 text-amber-accent flex items-center justify-center">
+                <i class="fa-regular fa-envelope-open text-2xl"></i>
+            </div>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-navy">Stay Updated with BookNest</h2>
+            <p class="text-sm sm:text-base text-navy-muted mt-2 max-w-xl mx-auto">
+                Subscribe to our weekly literary digest for curated reading lists, exclusive author interviews, and early access to seasonal book sales.
+            </p>
+            
+            <form onsubmit="handleNewsletterSubmit(event)" class="mt-8 max-w-lg mx-auto flex flex-col sm:flex-row gap-3">
+                <input 
+                    type="email" 
+                    id="newsletter-email"
+                    required
+                    placeholder="Enter your email address..." 
+                    class="flex-1 px-5 py-3.5 rounded-xl bg-white border border-cream-border text-sm text-navy placeholder-navy-muted/60 focus:outline-none focus:border-amber-accent focus:ring-2 focus:ring-amber-accent/20"
+                >
+                <button type="submit" class="px-7 py-3.5 rounded-xl bg-navy hover:bg-amber-accent text-white font-semibold text-sm transition-colors shadow-md shrink-0">
+                    Subscribe
+                </button>
+            </form>
+            <p class="text-xs text-navy-muted mt-3">No spam, ever. Unsubscribe anytime with one click.</p>
+        </div>
+    </section>
+
+    <!-- ==================== 10. FOOTER ==================== -->
+    <footer id="contact" class="bg-navy text-cream pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+                
+                <!-- Brand & About Us -->
+                <div class="space-y-4">
+                    <a href="#home" class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl bg-amber-accent text-white flex items-center justify-center">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <span class="font-serif text-2xl font-bold text-white">Book<span class="text-amber-gold">Nest</span></span>
+                    </a>
+                    <p class="text-sm text-cream/75 leading-relaxed">
+                        <strong>About Us:</strong> BookNest is an independent online sanctuary for book lovers. We connect curious minds with timeless literature, modern bestsellers, and thoughtful non-fiction.
+                    </p>
+                    <div class="flex items-center space-x-3 pt-2">
+                        <a href="#contact" aria-label="Facebook" class="w-9 h-9 rounded-full bg-white/10 hover:bg-amber-accent text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="#contact" aria-label="Instagram" class="w-9 h-9 rounded-full bg-white/10 hover:bg-amber-accent text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                        <a href="#contact" aria-label="Twitter" class="w-9 h-9 rounded-full bg-white/10 hover:bg-amber-accent text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-x-twitter text-sm"></i>
+                        </a>
+                        <a href="#contact" aria-label="Goodreads" class="w-9 h-9 rounded-full bg-white/10 hover:bg-amber-accent text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-goodreads-g text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Exploration -->
+                <div>
+                    <h4 class="font-serif text-lg font-bold text-white mb-4">Explore</h4>
+                    <ul class="space-y-2.5 text-sm text-cream/75">
+                        <li><a href="#home" class="hover:text-amber-gold transition-colors">Home</a></li>
+                        <li><a href="#categories" class="hover:text-amber-gold transition-colors">Book Categories</a></li>
+                        <li><a href="#featured" class="hover:text-amber-gold transition-colors">Featured Collection</a></li>
+                        <li><a href="#bestsellers" class="hover:text-amber-gold transition-colors">Best Sellers</a></li>
+                        <li><a href="#authors" class="hover:text-amber-gold transition-colors">Featured Authors</a></li>
+                    </ul>
+                </div>
+
+                <!-- Customer Support & Legal -->
+                <div>
+                    <h4 class="font-serif text-lg font-bold text-white mb-4">Customer Support</h4>
+                    <ul class="space-y-2.5 text-sm text-cream/75">
+                        <li><a href="#contact" onclick="showToast('Support Center: Available 24/7 at help@booknest.com')" class="hover:text-amber-gold transition-colors">Help & FAQs</a></li>
+                        <li><a href="#contact" onclick="showToast('Free shipping on all orders above $35!')" class="hover:text-amber-gold transition-colors">Shipping & Returns</a></li>
+                        <li><a href="#contact" onclick="showToast('Privacy Policy: Your reading data is strictly protected.')" class="hover:text-amber-gold transition-colors">Privacy Policy</a></li>
+                        <li><a href="#contact" onclick="showToast('Terms & Conditions: Standard bookstore terms apply.')" class="hover:text-amber-gold transition-colors">Terms and Conditions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Details -->
+                <div>
+                    <h4 class="font-serif text-lg font-bold text-white mb-4">Get in Touch</h4>
+                    <ul class="space-y-3 text-sm text-cream/75">
+                        <li class="flex items-start space-x-3">
+                            <i class="fa-solid fa-location-dot text-amber-gold mt-1"></i>
+                            <span>221B Literary Lane, Reading District, NY 10012</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fa-solid fa-phone text-amber-gold"></i>
+                            <span>+1 (800) 555-BOOK</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fa-solid fa-envelope text-amber-gold"></i>
+                            <span>hello@booknest.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Copyright Bar -->
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-cream/60 gap-4">
+                <p>&copy; 2026 BookNest – Your World of Stories. All rights reserved.</p>
+                <div class="flex items-center space-x-4 text-base text-cream/70">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-cc-amex"></i>
+                    <i class="fa-brands fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== 8. SLIDE-OVER SHOPPING CART DRAWER ==================== -->
+    <div id="cart-backdrop" onclick="toggleCartDrawer()" class="fixed inset-0 bg-navy/50 backdrop-blur-xs z-50 hidden transition-opacity"></div>
+    
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-cream-light z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- Cart Header -->
+        <div class="px-6 py-5 bg-navy text-white flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-bag-shopping text-amber-gold text-xl"></i>
+                <h3 class="font-serif text-xl font-bold">Your Reading Bag</h3>
+                <span id="drawer-cart-count" class="px-2.5 py-0.5 rounded-full bg-amber-accent text-xs font-bold">0</span>
+            </div>
+            <button onclick="toggleCartDrawer()" aria-label="Close Cart" class="p-2 rounded-lg text-cream/80 hover:text-white hover:bg-white/10 transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Cart Summary & Checkout -->
+        <div id="cart-footer" class="p-6 bg-cream border-t border-cream-border space-y-4">
+            <div class="space-y-1.5 text-sm">
+                <div class="flex justify-between text-navy-muted">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="font-medium text-navy">$0.00</span>
+                </div>
+                <div class="flex justify-between text-navy-muted">
+                    <span>Shipping</span>
+                    <span id="cart-shipping" class="font-medium text-emerald-700">Free</span>
+                </div>
+                <div class="flex justify-between text-base font-bold text-navy pt-2 border-t border-cream-border">
+                    <span>Estimated Total</span>
+                    <span id="cart-total" class="text-amber-accent text-lg">$0.00</span>
+                </div>
+            </div>
+            
+            <button onclick="handleCheckout()" id="checkout-btn" class="w-full py-3.5 rounded-xl bg-amber-accent hover:bg-amber-hover text-white font-semibold text-base shadow-md transition-all flex items-center justify-center space-x-2">
+                <span>Proceed to Checkout</span>
+                <i class="fa-solid fa-lock text-xs"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ==================== WISHLIST MODAL ==================== -->
+    <div id="wishlist-modal" class="fixed inset-0 bg-navy/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cream-light rounded-2xl max-w-lg w-full shadow-2xl border border-cream-border overflow-hidden">
+            <div class="px-6 py-4 bg-navy text-white flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-heart text-amber-accent"></i>
+                    <h3 class="font-serif text-lg font-bold">Saved Wishlist</h3>
+                </div>
+                <button onclick="toggleWishlistModal()" class="text-cream/80 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div id="wishlist-items-container" class="p-6 max-h-96 overflow-y-auto space-y-3">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CUSTOM NOTIFICATION TOAST ==================== -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // 1. BOOK CATALOG DATA
+        const booksData = [
+            {
+                id: 1,
+                title: "Atomic Habits",
+                author: "James Clear",
+                category: "Self-Help",
+                rating: 4.9,
+                reviews: 4280,
+                originalPrice: 27.00,
+                price: 16.99,
+                featured: true,
+                bestseller: true,
+                badge: "37% OFF",
+                cover: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 2,
+                title: "The Alchemist",
+                author: "Paulo Coelho",
+                category: "Fiction",
+                rating: 4.8,
+                reviews: 3890,
+                originalPrice: 21.99,
+                price: 12.99,
+                featured: true,
+                bestseller: true,
+                badge: "40% OFF",
+                cover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                title: "Rich Dad Poor Dad",
+                author: "Robert Kiyosaki",
+                category: "Education",
+                rating: 4.7,
+                reviews: 3120,
+                originalPrice: 24.99,
+                price: 14.50,
+                featured: true,
+                bestseller: false,
+                badge: "42% OFF",
+                cover: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 4,
+                title: "Harry Potter and the Sorcerer's Stone",
+                author: "J.K. Rowling",
+                category: "Fantasy",
+                rating: 4.9,
+                reviews: 8940,
+                originalPrice: 29.99,
+                price: 18.99,
+                featured: true,
+                bestseller: true,
+                badge: "Bestseller",
+                cover: "https://images.unsplash.com/photo-1618666012174-83b441c0bc76?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 5,
+                title: "Ikigai: The Japanese Secret",
+                author: "Hector Garcia & Francesc Miralles",
+                category: "Self-Help",
+                rating: 4.8,
+                reviews: 2740,
+                originalPrice: 22.00,
+                price: 13.99,
+                featured: true,
+                bestseller: false,
+                badge: "36% OFF",
+                cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 6,
+                title: "The Psychology of Money",
+                author: "Morgan Housel",
+                category: "Education",
+                rating: 4.9,
+                reviews: 3560,
+                originalPrice: 26.00,
+                price: 15.99,
+                featured: true,
+                bestseller: true,
+                badge: "Top Rated",
+                cover: "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 7,
+                title: "Dune: Deluxe Edition",
+                author: "Frank Herbert",
+                category: "Science Fiction",
+                rating: 4.8,
+                reviews: 2910,
+                originalPrice: 32.00,
+                price: 19.99,
+                featured: false,
+                bestseller: true,
+                badge: "Sci-Fi Hit",
+                cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 8,
+                title: "The Silent Patient",
+                author: "Alex Michaelides",
+                category: "Mystery & Thriller",
+                rating: 4.7,
+                reviews: 2150,
+                originalPrice: 25.00,
+                price: 13.49,
+                featured: false,
+                bestseller: true,
+                badge: "Thriller",
+                cover: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 9,
+                title: "Pride and Prejudice",
+                author: "Jane Austen",
+                category: "Romance",
+                rating: 4.9,
+                reviews: 5120,
+                originalPrice: 18.99,
+                price: 10.99,
+                featured: false,
+                bestseller: false,
+                badge: "Classic",
+                cover: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 10,
+                title: "Becoming",
+                author: "Michelle Obama",
+                category: "Biography",
+                rating: 4.9,
+                reviews: 6180,
+                originalPrice: 30.00,
+                price: 17.50,
+                featured: false,
+                bestseller: true,
+                badge: "Memoir",
+                cover: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        // 2. CATEGORIES DATA
+        const categoriesData = [
+            { name: "Fiction", icon: "fa-feather-pointed", count: "1,240" },
+            { name: "Science Fiction", icon: "fa-rocket", count: "680" },
+            { name: "Romance", icon: "fa-heart", count: "950" },
+            { name: "Mystery & Thriller", icon: "fa-magnifying-glass", count: "830" },
+            { name: "Self-Help", icon: "fa-seedling", count: "1,120" },
+            { name: "Biography", icon: "fa-user-tie", count: "540" },
+            { name: "Fantasy", icon: "fa-wand-magic-sparkles", count: "890" },
+            { name: "Education", icon: "fa-graduation-cap", count: "760" }
+        ];
+
+        // 3. STATE MANAGEMENT
+        let cart = [];
+        let wishlist = [];
+        let activeCategory = "All";
+        let searchQuery = "";
+        let currentSort = "featured";
+
+        // 4. INITIALIZATION
+        document.addEventListener("DOMContentLoaded", () => {
+            renderCategories();
+            renderFeaturedBooks();
+            renderBestSellers();
+            updateCartUI();
+        });
+
+        // 5. RENDER CATEGORIES
+        function renderCategories() {
+            const grid = document.getElementById("categories-grid");
+            grid.innerHTML = categoriesData.map(cat => {
+                const isSelected = activeCategory === cat.name;
+                return `
+                    <button 
+                        onclick="filterByCategory('${cat.name}')"
+                        class="group p-4 rounded-2xl border transition-all duration-300 text-center flex flex-col items-center justify-center space-y-2.5 ${
+                            isSelected 
+                            ? 'bg-navy text-white border-navy shadow-md transform -translate-y-1' 
+                            : 'bg-cream-light hover:bg-white text-navy border-cream-border hover:border-amber-accent shadow-xs hover:shadow-card hover:-translate-y-1'
+                        }"
+                    >
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
+                            isSelected 
+                            ? 'bg-amber-accent text-white' 
+                            : 'bg-amber-soft text-amber-accent group-hover:bg-amber-accent group-hover:text-white'
+                        }">
+                            <i class="fa-solid ${cat.icon} text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xs sm:text-sm leading-tight">${cat.name}</h3>
+                            <span class="text-[11px] ${isSelected ? 'text-cream/70' : 'text-navy-muted'}">${cat.count} Books</span>
+                        </div>
+                    </button>
+                `;
+            }).join("");
+        }
+
+        // 6. STAR RATING HELPER
+        function getStarRatingHTML(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalf = rating % 1 >= 0.5;
+            let html = "";
+            for (let i = 0; i < fullStars; i++) {
+                html += `<i class="fa-solid fa-star text-amber-gold text-xs"></i>`;
+            }
+            if (hasHalf) {
+                html += `<i class="fa-solid fa-star-half-stroke text-amber-gold text-xs"></i>`;
+            }
+            return html;
+        }
+
+        // 7. BOOK CARD COMPONENT
+        function createBookCardHTML(book, compact = false) {
+            const isWishlisted = wishlist.includes(book.id);
+            const fallbackUrl = `https://placehold.co/400x600/1A2536/FAF7F2?text=${encodeURIComponent(book.title)}`;
+            
+            return `
+                <article class="group bg-white rounded-2xl border border-cream-border shadow-card hover:shadow-soft transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1">
+                    <!-- Cover Image Container -->
+                    <div class="relative aspect-[3/4] bg-cream-dark overflow-hidden">
+                        <img 
+                            src="${book.cover}" 
+                            alt="${book.title}" 
+                            onerror="this.src='${fallbackUrl}'"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        >
+                        <!-- Discount / Tag Badge -->
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-amber-accent text-white text-[11px] font-bold tracking-wide shadow-sm">
+                            ${book.badge}
+                        </span>
+                        
+                        <!-- Wishlist Heart Button -->
+                        <button 
+                            onclick="toggleWishlist(${book.id})" 
+                            aria-label="Save to wishlist"
+                            class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-xs hover:bg-white text-navy flex items-center justify-center shadow-sm transition-transform hover:scale-110"
+                        >
+                            <i class="${isWishlisted ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart text-navy'}"></i>
+                        </button>
+                    </div>
+
+                    <!-- Book Details -->
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-amber-accent">${book.category}</span>
+                            <h3 class="font-serif text-lg font-bold text-navy mt-0.5 line-clamp-1 group-hover:text-amber-accent transition-colors" title="${book.title}">
+                                ${book.title}
+                            </h3>
+                            <p class="text-xs text-navy-muted mt-0.5 line-clamp-1">by ${book.author}</p>
+                            
+                            <!-- Rating -->
+                            <div class="flex items-center space-x-1.5 mt-2">
+                                <div class="flex items-center space-x-0.5">
+                                    ${getStarRatingHTML(book.rating)}
+                                </div>
+                                <span class="text-xs font-semibold text-navy">${book.rating}</span>
+                                <span class="text-[11px] text-navy-muted">(${book.reviews.toLocaleString()})</span>
+                            </div>
+                        </div>
+
+                        <!-- Pricing & Add to Cart -->
+                        <div class="pt-3 border-t border-cream-border flex items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs text-navy-muted line-through block">$${book.originalPrice.toFixed(2)}</span>
+                                <span class="text-lg font-bold text-navy">$${book.price.toFixed(2)}</span>
+                            </div>
+                            
+                            <button 
+                                onclick="addToCart(${book.id})" 
+                                class="px-4 py-2.5 rounded-xl bg-navy hover:bg-amber-accent text-white text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5 shadow-xs active:scale-95"
+                            >
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        // 8. RENDER FEATURED / FILTERED BOOKS
+        function renderFeaturedBooks() {
+            const grid = document.getElementById("featured-books-grid");
+            const emptyState = document.getElementById("no-books-found");
+            const filterLabel = document.getElementById("active-filter-label");
+
+            let filtered = booksData.filter(book => {
+                const matchesCategory = activeCategory === "All" || book.category === activeCategory;
+                const q = searchQuery.toLowerCase().trim();
+                const matchesSearch = !q || 
+                    book.title.toLowerCase().includes(q) || 
+                    book.author.toLowerCase().includes(q) ||
+                    book.category.toLowerCase().includes(q);
+                return matchesCategory && matchesSearch;
+            });
+
+            // Apply Sorting
+            if (currentSort === "price-low") {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === "price-high") {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (currentSort === "rating") {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (activeCategory === "All" && !searchQuery) {
+                // Default view shows the 6 core featured books
+                filtered = filtered.filter(b => b.featured);
+            }
+
+            // Update Label
+            if (searchQuery) {
+                filterLabel.textContent = `Search: "${searchQuery}" (${filtered.length})`;
+            } else if (activeCategory !== "All") {
+                filterLabel.textContent = `Category: ${activeCategory} (${filtered.length})`;
+            } else {
+                filterLabel.textContent = `Showing: Featured Collection (${filtered.length})`;
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = "";
+                emptyState.classList.remove("hidden");
+            } else {
+                emptyState.classList.add("hidden");
+                grid.innerHTML = filtered.map(book => createBookCardHTML(book)).join("");
+            }
+        }
+
+        // 9. RENDER BEST-SELLING BOOKS
+        function renderBestSellers() {
+            const grid = document.getElementById("bestsellers-grid");
+            const bestsellers = booksData.filter(book => book.bestseller).slice(0, 4);
+            grid.innerHTML = bestsellers.map(book => createBookCardHTML(book, true)).join("");
+        }
+
+        // 10. FILTER & SEARCH HANDLERS
+        function filterByCategory(category) {
+            activeCategory = category;
+            renderCategories();
+            renderFeaturedBooks();
+            document.getElementById("featured").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function filterBooksByQuery(query) {
+            searchQuery = query;
+            renderFeaturedBooks();
+        }
+
+        function handleSearchSubmit(e) {
+            e.preventDefault();
+            const val = document.getElementById("hero-search-input").value;
+            filterBooksByQuery(val);
+            document.getElementById("featured").scrollIntoView({ behavior: "smooth" });
+        }
+
+        function filterBooksByAuthor(authorName) {
+            const searchInput = document.getElementById("hero-search-input");
+            searchInput.value = authorName;
+            activeCategory = "All";
+            renderCategories();
+            filterBooksByQuery(authorName);
+            document.getElementById("featured").scrollIntoView({ behavior: "smooth" });
+        }
+
+        function sortBooks(sortType) {
+            currentSort = sortType;
+            renderFeaturedBooks();
+        }
+
+        function resetAllFilters() {
+            activeCategory = "All";
+            searchQuery = "";
+            currentSort = "featured";
+            document.getElementById("hero-search-input").value = "";
+            document.getElementById("sort-books").value = "featured";
+            renderCategories();
+            renderFeaturedBooks();
+        }
+
+        function focusHeroSearch() {
+            const input = document.getElementById("hero-search-input");
+            input.scrollIntoView({ behavior: "smooth", block: "center" });
+            setTimeout(() => input.focus(), 400);
+        }
+
+        // 11. SHOPPING CART FUNCTIONALITY
+        function addToCart(bookId) {
+            const book = booksData.find(b => b.id === bookId);
+            if (!book) return;
+
+            const existingItem = cart.find(item => item.id === bookId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...book, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Added "${book.title}" to your reading bag!`);
+        }
+
+        function updateQuantity(bookId, delta) {
+            const itemIndex = cart.findIndex(item => item.id === bookId);
+            if (itemIndex === -1) return;
+
+            cart[itemIndex].quantity += delta;
+            if (cart[itemIndex].quantity <= 0) {
+                cart.splice(itemIndex, 1);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(bookId) {
+            cart = cart.filter(item => item.id !== bookId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById("cart-badge").textContent = totalItems;
+            document.getElementById("drawer-cart-count").textContent = totalItems;
+
+            const container = document.getElementById("cart-items-container");
+            const footer = document.getElementById("cart-footer");
+
+            if (cart.length === 0) {
+                footer.classList.add("hidden");
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center py-12">
+                        <div class="w-20 h-20 rounded-full bg-amber-soft text-amber-accent flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-basket-shopping text-3xl"></i>
+                        </div>
+                        <h4 class="font-serif text-xl font-bold text-navy">Your bag is empty</h4>
+                        <p class="text-sm text-navy-muted mt-1 mb-6 max-w-xs">
+                            Looks like you haven't added any stories to your nest yet.
+                        </p>
+                        <button onclick="toggleCartDrawer()" class="px-6 py-2.5 rounded-xl bg-navy text-white text-sm font-medium hover:bg-amber-accent transition-colors">
+                            Browse Books
+                        </button>
+                    </div>
+                `;
+            } else {
+                footer.classList.remove("hidden");
+                container.innerHTML = cart.map(item => `
+                    <div class="flex gap-4 p-3.5 rounded-2xl bg-white border border-cream-border shadow-xs">
+                        <img src="${item.cover}" alt="${item.title}" onerror="this.src='https://placehold.co/100x150/1A2536/FAF7F2?text=Book'" class="w-16 h-24 object-cover rounded-lg shrink-0">
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start gap-2">
+                                    <h4 class="font-serif font-bold text-sm text-navy line-clamp-1">${item.title}</h4>
+                                    <button onclick="removeFromCart(${item.id})" aria-label="Remove item" class="text-navy-muted hover:text-red-500 text-xs">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-navy-muted">${item.author}</p>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="flex items-center border border-cream-border rounded-lg bg-cream">
+                                    <button onclick="updateQuantity(${item.id}, -1)" class="w-7 h-7 flex items-center justify-center text-navy hover:text-amber-accent font-bold">-</button>
+                                    <span class="px-2.5 text-xs font-semibold text-navy">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.id}, 1)" class="w-7 h-7 flex items-center justify-center text-navy hover:text-amber-accent font-bold">+</button>
+                                </div>
+                                <span class="font-bold text-sm text-navy">$${(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join("");
+
+                const shipping = subtotal >= 35 ? 0 : 4.99;
+                const total = subtotal + shipping;
+
+                document.getElementById("cart-subtotal").textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById("cart-shipping").textContent = shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`;
+                document.getElementById("cart-total").textContent = `$${total.toFixed(2)}`;
+            }
+        }
+
+        function toggleCartDrawer() {
+            const drawer = document.getElementById("cart-drawer");
+            const backdrop = document.getElementById("cart-backdrop");
+            const isClosed = drawer.classList.contains("translate-x-full");
+
+            if (isClosed) {
+                drawer.classList.remove("translate-x-full");
+                backdrop.classList.remove("hidden");
+            } else {
+                drawer.classList.add("translate-x-full");
+                backdrop.classList.add("hidden");
+            }
+        }
+
+        function handleCheckout() {
+            if (cart.length === 0) return;
+            const total = document.getElementById("cart-total").textContent;
+            cart = [];
+            updateCartUI();
+            toggleCartDrawer();
+            showToast(`Order placed successfully (${total})! Thank you for shopping with BookNest.`);
+        }
+
+        // 12. WISHLIST FUNCTIONALITY
+        function toggleWishlist(bookId) {
+            const index = wishlist.indexOf(bookId);
+            const book = booksData.find(b => b.id === bookId);
+            if (index === -1) {
+                wishlist.push(bookId);
+                showToast(`Saved "${book.title}" to your wishlist.`);
+            } else {
+                wishlist.splice(index, 1);
+                showToast(`Removed "${book.title}" from your wishlist.`);
+            }
+
+            const badge = document.getElementById("wishlist-badge");
+            badge.textContent = wishlist.length;
+            badge.classList.toggle("hidden", wishlist.length === 0);
+
+            renderFeaturedBooks();
+            renderBestSellers();
+            renderWishlistModal();
+        }
+
+        function toggleWishlistModal() {
+            const modal = document.getElementById("wishlist-modal");
+            modal.classList.toggle("hidden");
+            if (!modal.classList.contains("hidden")) {
+                renderWishlistModal();
+            }
+        }
+
+        function renderWishlistModal() {
+            const container = document.getElementById("wishlist-items-container");
+            if (wishlist.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fa-regular fa-heart text-3xl text-navy-muted mb-2"></i>
+                        <p class="text-sm text-navy-muted">Your wishlist is currently empty.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = wishlist.map(id => {
+                const book = booksData.find(b => b.id === id);
+                return `
+                    <div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-white border border-cream-border">
+                        <div class="flex items-center gap-3">
+                            <img src="${book.cover}" alt="${book.title}" class="w-12 h-16 object-cover rounded-md">
+                            <div>
+                                <h4 class="font-serif font-bold text-sm text-navy">${book.title}</h4>
+                                <p class="text-xs text-navy-muted">${book.author} • <strong class="text-navy">$${book.price.toFixed(2)}</strong></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="addToCart(${book.id}); toggleWishlistModal();" class="px-3 py-1.5 rounded-lg bg-navy text-white text-xs font-medium hover:bg-amber-accent transition-colors">
+                                Move to Bag
+                            </button>
+                            <button onclick="toggleWishlist(${book.id})" class="p-1.5 text-navy-muted hover:text-red-500">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        // 13. MOBILE MENU, PROMO & NEWSLETTER HANDLERS
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            const icon = document.getElementById("mobile-menu-icon");
+            menu.classList.toggle("hidden");
+            icon.classList.toggle("fa-bars");
+            icon.classList.toggle("fa-xmark");
+        }
+
+        function copyPromoCode() {
+            const tempInput = document.createElement("input");
+            tempInput.value = "NEST50";
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast("Promo code NEST50 copied to clipboard!");
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById("newsletter-email");
+            if (emailInput.value) {
+                showToast(`Welcome to BookNest! Subscribed ${emailInput.value}.`);
+                emailInput.value = "";
+            }
+        }
+
+        // 14. CUSTOM TOAST MESSAGE SYSTEM
+        function showToast(message) {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "pointer-events-auto flex items-center space-x-3 px-5 py-3.5 rounded-xl bg-navy text-white text-sm font-medium shadow-xl border border-white/10 transform transition-all duration-300 translate-y-2 opacity-0";
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-amber-gold text-base"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove("translate-y-2", "opacity-0");
+            });
+
+            setTimeout(() => {
+                toast.classList.add("translate-y-2", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+    </script>
+</body>
+</html>
